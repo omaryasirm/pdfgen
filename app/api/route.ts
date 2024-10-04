@@ -1,4 +1,4 @@
-import chromium from "@sparticuz/chromium-min";
+import chromium from "@sparticuz/chromium";
 import { PDFDocument } from "pdf-lib";
 import { Browser } from "puppeteer";
 import { Browser as CoreBrowser } from "puppeteer-core";
@@ -24,14 +24,16 @@ export const GET = async (req: Request) => {
     browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath(
+        "https://github.com/omaryasirm/chromium/releases/download/v116.0.0/chromium-v127.0.0-pack.tar"
+      ),
       headless: chromium.headless,
     });
   } else {
     const puppeteer = await import("puppeteer");
     browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      headless: "shell",
+      headless: "new",
     });
   }
 
@@ -47,21 +49,21 @@ export const GET = async (req: Request) => {
 
   await browser.close();
 
-  const mergedPdf = await PDFDocument.create();
+  // const mergedPdf = await PDFDocument.create();
 
-  for (const pdfBuffer of pdfBuffers) {
-    const pdf = await PDFDocument.load(pdfBuffer);
-    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-    copiedPages.forEach((page) => {
-      mergedPdf.addPage(page);
-    });
-  }
+  // for (const pdfBuffer of pdfBuffers) {
+  //   const pdf = await PDFDocument.load(pdfBuffer);
+  //   const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+  //   copiedPages.forEach((page) => {
+  //     mergedPdf.addPage(page);
+  //   });
+  // }
 
-  const mergedPdfBuffer = await mergedPdf.save();
+  // const mergedPdfBuffer = await mergedPdf.save();
 
-  const pdfBlob = new Blob([mergedPdfBuffer], { type: "application/pdf" });
+  // const pdfBlob = new Blob([mergedPdfBuffer], { type: "application/pdf" });
 
-  return new Response(pdfBlob, {
+  return new Response("pdfBlob", {
     headers: {
       "Content-Type": "application/pdf",
     },
