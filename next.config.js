@@ -1,12 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: [
-      'puppeteer-core',
-      // '@sparticuz/chromium',
-      '@sparticuz/chromium-min',
-    ]
-  }
-}
+const nextConfig = {}
 
 module.exports = nextConfig
