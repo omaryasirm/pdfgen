@@ -1,11 +1,9 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-
-export default function Home() {
-  const searchParams = useSearchParams();
-
-  const searchInvoice = searchParams.get("invoice");
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string }>;
+}) {
+  const searchInvoice = (await searchParams)["invoice"];
 
   let tempInvoice = {
     id: "f0c4d333-02f1-4401-9bf5-61abc4515338",
@@ -83,8 +81,6 @@ export default function Home() {
 
   const invoice: any =
     searchInvoice != null ? JSON.parse(searchInvoice) : tempInvoice;
-
-  // console.log(invoice);
 
   return (
     <main>
